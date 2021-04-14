@@ -1,0 +1,23 @@
+{
+  "name": "sf-assign",
+  "version": "1.0.0",
+  "description": "stack finance assignment",
+  "main": "bin/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Simran Singh",
+  "license": "ISC",
+  "keywords": [
+    "dictionary"
+  ],
+  "bin": {
+    "dict": "./bin/index.js"
+  },
+  "dependencies": {
+    "commander": "^7.2.0",
+    "inquirer": "^8.0.0",
+    "mongoose": "^5.12.3",
+    "yargs": "^16.2.0"
+  }
+}
