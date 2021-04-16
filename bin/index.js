@@ -17,7 +17,7 @@ const options = yargs
       .help(true)  
       .argv;
 
-cmd.callingLogics(process, yargs);
+cmd.cmdActions(process, yargs);
 
 
 

@@ -7,25 +7,23 @@ class Services{
         this.utils = new DictionaryLogics();
     }
 
-    callingLogics(process, yargs) {
-        
+    cmdActions(process, yargs) {
+
         if(process.argv.length == 2) {
-
-            console.log("word of the day -Random Word");
             
-        } else if(process.argv.length == 3 && !this.cmd.includes(process.argv[2])) {
-
+            this.utils.wordOfTheDay();
+            
+        } else if(process.argv.length == 3) {
+            
             if(process.argv[2] == this.cmd[4]){
-
-                console.log('Play the Game!', word);
-
+                this.utils.startGame();
             }
             else {
-
                 var word = process.argv[2];
-                console.log('everything about this word', word);
+                this.utils.allOfGivenWord(word);
             }
         } else if(process.argv.length == 4 && this.cmd.includes(process.argv[2])) {
+
             //do the operation according to process.argv[2]
             var word = process.argv[3];
             if(process.argv[2] == this.cmd[0]) { 
@@ -44,7 +42,10 @@ class Services{
 
                 this.utils.getExample(word);
 
+            } else {
+                this.utils.showHelp(); 
             }
+    
         } else {
 
                 this.utils.showHelp();  
