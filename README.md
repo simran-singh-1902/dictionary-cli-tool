@@ -5,13 +5,14 @@ A command line interface tool for dictionary operations.
 Usage: dict <options> word
 
 Options:
-  --version            Show version number                             [boolean]
-  --def, --definition  Meanin of the given word.                        [string]
-  --syn, --synonyms    Synonmys of the given word.                      [string]
-  --ant, --antonyms    Antonyms of the given word.                      [string]
-  --ex, --examples     Examples of the given word.                      [string]
-  --play, --playGame   Play the game!
-  --help               Show help                                       [boolean]
+
+ <li> --version            Show version number                             [boolean]
+ <li> --def, --definition  Meanin of the given word.                        [string]
+ <li> --syn, --synonyms    Synonmys of the given word.                      [string]
+ <li> --ant, --antonyms    Antonyms of the given word.                      [string]
+ <li> --ex, --examples     Examples of the given word.                      [string]
+ <li> --play, --playGame   Play the game!
+ <li> --help               Show help                                       [boolean]
 
 1. Word Definitions
 	Display definitions of a word. 
