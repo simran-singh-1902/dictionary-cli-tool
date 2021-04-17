@@ -2,7 +2,7 @@ const chalk = require('chalk')
 const inquirer = require('inquirer')
 
 class Play {
-    
+
     async askQuestion(word){
         
         var response = await inquirer.prompt([{
@@ -21,23 +21,32 @@ class Play {
                 choices: [{ name: '1. try again' }, { name: '2. hint' }, { name: '3. quit' }],
               }]);
             var option = response.option;
-            await seeNewOptions(newChance);      
+            this.seeNewOptions(option, word);      
         }
     }
 
-    seeNewOptions(option){
+    seeNewOptions(option, word){
         switch(option){
             case '1. try again':
                 this.askQuestion(word);
                 break;
             case '2. hint':
-                console.log(shuffleWord(word));
-                secondHint(word);    
+                console.log(chalk.yellow("Hint 1 =>",this.shuffleWord(word)));
+                this.askQuestion(word);
+                break;
+                
+            case '3. quit':
+                console.log(chalk.yellow('Word is ', chalk.green(word.toUpperCase()), '\n'))     
         }
     }
 
-    shuffleWord(word){
-        let hintWord = word.split('').sort(function () { return 0.5 - Math.random() }).join('');
+    shuffleWord(s){
+        var arr = s.split('');           
+        arr.sort(function() {
+            return 0.5 - Math.random();
+        });  
+        s = arr.join('');                
+        return s;   
     }
 
 }

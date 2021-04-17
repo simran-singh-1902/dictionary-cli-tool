@@ -114,7 +114,7 @@ class DictionaryLogics {
                 } else {
                     this.getAntonyms(answer);
                 }  
-            this.play.askQuestion(word);              
+                this.play.askQuestion(answer);              
             }
         });
     }
