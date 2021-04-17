@@ -1,106 +1,129 @@
 const Dictionary = require("../models/dictionary");
-const Play = require("./play");
 const chalk = require('chalk')
 
 class DictionaryLogics {
-
-    constructor() {
-        this.play = new Play();
-    }
 
     async wordInDictionary(word) {
         this.db = new Dictionary();
         this.data = this.db.createSchemas();
         var exist = false;
-        await this.data.Definition.distinct('word').then(words =>
-            {
-                if (words.includes(word)){
+        await this.data.Definition.distinct('word').then(words => {
+            if (word) {
+                if (words.includes(word)) {
                     exist = true;
-                } 
-                else {
+                } else {
                     exist = false;
                 }
-            });
+            } else {
+                exist = words;
+            }
+        });
         return exist;
     }
 
     async getDefinition(word) {
-        
+
         let inDict = await this.wordInDictionary(word);
-        var def;  
+        var def;
         if (inDict) {
-            await this.data.Definition.find({word: word}).then(word => {
-                    def = word[0].definition; 
+            await this.data.Definition.find({
+                word: word
+            }).then(word => {
+                def = word[0].definition;
             });
-        }   
-        return def;              
+        }
+        return def;
     }
 
     async getSynonyms(word) {
 
         let inDict = await this.wordInDictionary(word);
-        var syn;  
+        var syn;
         if (inDict) {
-            await this.data.Synonyms.find({word: word}).then(word => {
-                    syn = word[0].synonyms; 
+            await this.data.Synonyms.find({
+                word: word
+            }).then(word => {
+                syn = word[0].synonyms;
             });
-        }   
-        return syn; 
+        }
+        return syn;
     }
 
     async getAntonyms(word) {
 
         let inDict = await this.wordInDictionary(word);
-        var ant;  
+        var ant;
         if (inDict) {
-            await this.data.Antonyms.find({word: word}).then(word => {
-                    ant = word[0].antonyms; 
+            await this.data.Antonyms.find({
+                word: word
+            }).then(word => {
+                ant = word[0].antonyms;
+
             });
-        }   
-        return ant; 
+        }
+        return ant;
     }
-    
+
 
     async getExample(word) {
 
         let inDict = await this.wordInDictionary(word);
-        var ex;  
+        var ex;
         if (inDict) {
-            await this.data.Example.find({word: word}).then(word => {
-                    ex = word[0].example; 
+            await this.data.Example.find({
+                word: word
+            }).then(word => {
+                ex = word[0].Example;
             });
-        }   
-        return ex; 
-    }
-
-    getWordOfTheDay() {
-        
-    }
-
-    allOfGivenWord(word){
-        if (this.wordInDictionary(word)) {
-            console.log(chalk.blue.bold("WORD = ", word.toUpperCase()));
-            this.getDefinition(word);
-            this.getSynonyms(word);
         }
+        return ex;
     }
 
-    startGame(){
-        this.data.Definition.distinct('word', (err, words) => {
-            if (err) {
-                console.log(err);
-            } else {
-                var answer = this.chooseRandom(words);
-                var synOrAnt = this.chooseRandom(['Synonyms','Antonyms']);
-                this.getDefinition(answer);
-                if(synOrAnt == "Synonyms"){
-                    
-                } else {
-                    var antonyms = str.split(',');
-                }  
-                this.play.askQuestion(answer);              
+    async getDictionary(word) {
+
+        await this.data.Definition.aggregate([{
+                $lookup: {
+                    from: "this.data.Synonyms",
+                    as: "syn",
+                    pipeline: [
+                        { $match: { word: word } },]
+                }
+            },
+            {
+                $unwind: "$Ant"
+            },
+            {
+                $lookup: {
+                    from: "this.data.Antonyms",
+                    as: "ant",
+                    pipeline: [
+                        { $match: { word: word } },]
+                }
+            },
+            {
+                $unwind: "$Example"
+            },
+            {
+                $lookup: {
+                    from: "this.data.Example",
+                    as: "ex",
+                    pipeline: [
+                        { $match: { word: word } },]
+                }
+            },
+        ]).then(
+            (result) => {
+                console.log(result);
+                return result;
             }
-        });
+        )
+    }
+
+
+    async getWordOfTheDay() {
+        var words = await this.wordInDictionary();
+        var word = this.chooseRandom(words);
+        return word;
     }
 
     chooseRandom(array) {

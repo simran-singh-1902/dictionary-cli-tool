@@ -8,7 +8,7 @@ class Antonyms{
 
     async run(word){
         var ant = await this.retrieve.getAntonyms(word);
-        this.display(word, syn);   
+        this.display(word, ant);   
     }
 
     display(word, ant){
@@ -21,7 +21,7 @@ class Antonyms{
 
     runAnt(word){
         var ant = this.retrieve.getAntonyms(word);
-        console.log(chalk.green("Antonyms => ", syn));
+        console.log(chalk.green("Antonyms => ", ant));
     }
 
 }

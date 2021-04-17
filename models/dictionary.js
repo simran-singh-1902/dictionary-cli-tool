@@ -36,7 +36,7 @@ class Dictionary {
             example: {type: String},
         });
         var Example = new mongoose.model('Example', exSchema);
-
+        
         return { Definition, Synonyms, Antonyms, Example };
     }
 

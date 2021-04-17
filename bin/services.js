@@ -3,6 +3,8 @@ const Definition = require("../src/def");
 const Synonyms = require("../src/syn");
 const Antonyms = require("../src/ant");
 const Example = require("../src/ex");
+const WordOfTheDay = require("../src/word-of-the-day");
+const Play = require("../src/play");
 class Services{
     cmd = ["--def", "--syn", "--ant", "--ex", "--play", "--help", "--version"];
 
@@ -14,15 +16,19 @@ class Services{
     cmdActions(process, yargs) {
 
         if(process.argv.length == 2) {  
-            this.utils.wordOfTheDay();  
+            this.wod = new WordOfTheDay();
+            this.wod.run();
+
         } else if(process.argv.length == 3) {
             
             if(process.argv[2] == this.cmd[4]){
-                this.utils.startGame();
+                this.play = new Play();
+                this.play.run();
             }
             else {
                 var word = process.argv[2];
-                this.utils.allOfGivenWord(word);
+                this.dict = new WordOfTheDay();
+                this.dict.run(word);
             }
 
         } else if(process.argv.length == 4 && this.cmd.includes(process.argv[2])) {

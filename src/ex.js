@@ -20,7 +20,7 @@ class Example{
     }
 
     runEx(word){
-        var syn = this.retrieve.getSynonyms(word);
+        var ex = this.retrieve.getExample(word);
         console.log(chalk.green("Example => ", ex));
     }
 
