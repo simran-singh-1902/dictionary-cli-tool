@@ -1,19 +1,27 @@
-const DictionaryLogics = require("./utils.js");
-const chalk = require('chalk')
-
-class WordOfTheDay {
+const DictionaryLogics = require("./utils");
+const chalk = require("chalk");
+class WordOfTheDay{
 
     constructor(){
-        this.getData = new DictionaryLogics();
-    }
-    
-    retrieveWOD(){
-        var result = this.getData.wordOfTheDay();
-        console.log("HERE",result);
+        this.retrieve = new DictionaryLogics();
     }
 
-    displayWOD(word, def) {
-        console.log(chalk.green(`Definition of "`+word+`" is -> `,def));
+    async run(){
+        var word = await this.retrieve.getWordOfTheDay();
+        this.display(word, def);   
+    }
+
+    display(word, def){
+        if(def !== undefined){
+            console.log(chalk.green("Definition of '" + word.toUpperCase() + "' => ", def));
+        } else {
+            console.log(chalk.red("OOPS!! This word is not available in the dictionary !!!"));
+        }
+    }
+
+    runDef(word){
+        var def = this.retrieve.getDefinition(word);
+        console.log(chalk.green("Definition => ", def));
     }
 
 }

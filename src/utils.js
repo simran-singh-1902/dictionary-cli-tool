@@ -48,45 +48,33 @@ class DictionaryLogics {
         return syn; 
     }
 
-    getAntonyms(word) {
-        if (this.wordInDictionary(word)) {
-            this.data.Antonyms.find({
-                word: word
-            }, (err, word) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log(chalk.green("Antonyms => ", word[0].antonyms));
-                }
+    async getAntonyms(word) {
+
+        let inDict = await this.wordInDictionary(word);
+        var ant;  
+        if (inDict) {
+            await this.data.Antonyms.find({word: word}).then(word => {
+                    ant = word[0].antonyms; 
             });
-        }
+        }   
+        return ant; 
+    }
+    
+
+    async getExample(word) {
+
+        let inDict = await this.wordInDictionary(word);
+        var ex;  
+        if (inDict) {
+            await this.data.Example.find({word: word}).then(word => {
+                    ex = word[0].example; 
+            });
+        }   
+        return ex; 
     }
 
-    getExample(word) {
-        if (this.wordInDictionary(word)) {
-            this.data.Example.find({
-                word: word
-            }, (err, word) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log(chalk.green("Example => ", word[0].example));
-                }
-            });
-        }
-    }
-
-    wordOfTheDay() {
-        this.data.Definition.distinct('word', (err, words) => {
-            if (err) {
-                console.log(err);
-            } else {
-                var wod = this.chooseRandom(words);
-                console.log(chalk.blue.bold("WORD OF THE DAY = ", wod.toUpperCase()));
-                this.getDefinition(wod);
-                this.getSynonyms(wod);
-            }
-        });
+    getWordOfTheDay() {
+        
     }
 
     allOfGivenWord(word){
