@@ -40,4 +40,4 @@ Options:
 7. Word Game
 	./dict play
 	The program should display a definition, a synonym or an antonym
-	And ask the user to enter the word
+	And ask the user to enter the word.
