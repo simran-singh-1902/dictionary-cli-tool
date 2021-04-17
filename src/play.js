@@ -4,7 +4,6 @@ const inquirer = require('inquirer')
 class Play {
 
     async askQuestion(word){
-        
         var response = await inquirer.prompt([{
                 name: "reply",
                 type: "input",

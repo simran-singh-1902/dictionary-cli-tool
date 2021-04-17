@@ -5,51 +5,47 @@ const chalk = require('chalk')
 class DictionaryLogics {
 
     constructor() {
-        this.db = new Dictionary();
-        this.data = this.db.createSchemas();
         this.play = new Play();
     }
 
-    wordInDictionary(word) {
-        this.data.Definition.distinct('word', (err, words) => {
-            if (err) {
-                console.log(err);
-            } else {
-                if (words.includes(word)) return true;
+    async wordInDictionary(word) {
+        this.db = new Dictionary();
+        this.data = this.db.createSchemas();
+        var exist = false;
+        await this.data.Definition.distinct('word').then(words =>
+            {
+                if (words.includes(word)){
+                    exist = true;
+                } 
                 else {
-                    console.log(chalk.red("OOPS!! This word is not available in the dictionary !!!"));
-                    return;
-                }
-            }
-        });
-    }
-
-    getDefinition(word) {
-        if (this.wordInDictionary(word)) {
-            this.data.Definition.find({
-                word: word
-            }, (err, word) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log(chalk.green("Definition of '" + word[0].word.toUpperCase() + "' => ", word[0].definition));
+                    exist = false;
                 }
             });
-        }
+        return exist;
     }
 
-    getSynonyms(word) {
-        if (this.wordInDictionary(word)) {
-            this.data.Synonyms.find({
-                word: word
-            }, (err, word) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log(chalk.green("Synonyms of '" + word[0].word.toUpperCase() + "' => ", word[0].synonyms));
-                }
+    async getDefinition(word) {
+        
+        let inDict = await this.wordInDictionary(word);
+        var def;  
+        if (inDict) {
+            await this.data.Definition.find({word: word}).then(word => {
+                    def = word[0].definition; 
             });
-        }
+        }   
+        return def;              
+    }
+
+    async getSynonyms(word) {
+
+        let inDict = await this.wordInDictionary(word);
+        var syn;  
+        if (inDict) {
+            await this.data.Synonyms.find({word: word}).then(word => {
+                    syn = word[0].synonyms; 
+            });
+        }   
+        return syn; 
     }
 
     getAntonyms(word) {
@@ -60,7 +56,7 @@ class DictionaryLogics {
                 if (err) {
                     console.log(err);
                 } else {
-                    console.log(chalk.green("Antonyms of '" + word[0].word.toUpperCase() + "' => ", word[0].antonyms));
+                    console.log(chalk.green("Antonyms => ", word[0].antonyms));
                 }
             });
         }
@@ -74,7 +70,7 @@ class DictionaryLogics {
                 if (err) {
                     console.log(err);
                 } else {
-                    console.log(chalk.green("Example of '" + word[0].word.toUpperCase() + "' => ", word[0].example));
+                    console.log(chalk.green("Example => ", word[0].example));
                 }
             });
         }
@@ -110,9 +106,9 @@ class DictionaryLogics {
                 var synOrAnt = this.chooseRandom(['Synonyms','Antonyms']);
                 this.getDefinition(answer);
                 if(synOrAnt == "Synonyms"){
-                    this.getSynonyms(answer);
+                    
                 } else {
-                    this.getAntonyms(answer);
+                    var antonyms = str.split(',');
                 }  
                 this.play.askQuestion(answer);              
             }

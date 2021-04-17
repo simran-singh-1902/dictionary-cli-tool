@@ -37,14 +37,7 @@ class Dictionary {
         });
         var Example = new mongoose.model('Example', exSchema);
 
-        //5. Hints for words
-        const hintSchema = new mongoose.Schema({
-            word: {type: String, index: true, required: true},
-            hints: {type: String},
-        });
-        var Hints = new mongoose.model('Hints', hintSchema);
-
-        return { Definition, Synonyms, Antonyms, Example, Hints};
+        return { Definition, Synonyms, Antonyms, Example };
     }
 
 
