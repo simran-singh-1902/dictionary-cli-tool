@@ -29,6 +29,8 @@ class WordOfTheDay{
         console.log(chalk.green("Definition => ", dict.definition.toUpperCase()));
         console.log(chalk.blue("Synonyms => ", dict.syn[0].synonyms.toUpperCase()));
         console.log(chalk.whiteBright("Antonyms => ", dict.ant[0].antonyms.toUpperCase()));
+        console.log(chalk.magentaBright("Example => ", dict.ex[0].example.toUpperCase()));
+
     }
 
     displayDict(dict){
@@ -36,6 +38,8 @@ class WordOfTheDay{
         console.log(chalk.green("Definition => ", dict.definition.toUpperCase()));
         console.log(chalk.blue("Synonyms => ", dict.syn[0].synonyms.toUpperCase()));
         console.log(chalk.whiteBright("Antonyms => ", dict.ant[0].antonyms.toUpperCase()));
+        console.log(chalk.magentaBright("Example => ", dict.ex[0].example.toUpperCase()));
+
     }
 
 }

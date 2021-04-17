@@ -93,6 +93,7 @@ class Play {
                 break;
                 
             case '3. quit':
+                console.log('\n');
                 console.log(chalk.yellow('Word is ', chalk.green(dict.word.toUpperCase()), '\n'));
                 console.log(chalk.green.bold("Thanks for playing!!!"));
                 break;
