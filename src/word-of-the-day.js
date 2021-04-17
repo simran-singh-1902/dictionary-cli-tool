@@ -25,17 +25,17 @@ class WordOfTheDay{
     }
 
     displayWOD(dict){
-        // console.log(chalk.cyan.bold("WORD OF THE DAY => ", dict.word[0].toUpperCase()));
-        // console.log(chalk.green("Definition => ", dict.word[0].definition.toUpperCase()));
-        // console.log(chalk.blue("Synonyms => ", dict.word[0].syn[0].synonyms.toUpperCase()));
-        // console.log(chalk.yellow("Antonyms => ", dict.word[0].ant[0].antonyms.toUpperCase()));
+        console.log(chalk.cyan.bold("WORD OF THE DAY => ", dict.word.toUpperCase()));
+        console.log(chalk.green("Definition => ", dict.definition.toUpperCase()));
+        console.log(chalk.blue("Synonyms => ", dict.syn[0].synonyms.toUpperCase()));
+        console.log(chalk.whiteBright("Antonyms => ", dict.ant[0].antonyms.toUpperCase()));
     }
 
     displayDict(dict){
-        // console.log(chalk.cyan.bold("WORD => ", dict.word[0].toUpperCase()));
-        // console.log(chalk.green("Definition => ", dict.word[0].definition.toUpperCase()));
-        // console.log(chalk.blue("Synonyms => ", dict.word[0].syn[0].synonyms.toUpperCase()));
-        // console.log(chalk.yellow("Antonyms => ", dict.word[0].ant[0].antonyms.toUpperCase()));
+        console.log(chalk.cyan.bold("WORD => ", dict.word.toUpperCase()));
+        console.log(chalk.green("Definition => ", dict.definition.toUpperCase()));
+        console.log(chalk.blue("Synonyms => ", dict.syn[0].synonyms.toUpperCase()));
+        console.log(chalk.whiteBright("Antonyms => ", dict.ant[0].antonyms.toUpperCase()));
     }
 
 }

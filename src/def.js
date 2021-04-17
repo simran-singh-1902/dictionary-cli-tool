@@ -1,4 +1,4 @@
-const DictionaryLogics = require("./utils");
+const DictionaryLogics = require("./utils.js");
 const chalk = require("chalk");
 class Definition{
 

@@ -6,8 +6,8 @@ const cmd = new Services();
 
 //defining available options
 const usage = "\nUsage: dict <options> word";
-const options = yargs  
-      .usage(usage)  
+
+yargs.usage(usage)  
       .option("def", {alias:"definition", describe: "Meanin of the given word.", type: "string", demandOption
 : false }).option("syn", {alias:"synonyms", describe: "Synonmys of the given word.", type: "string", demandOption
 : false }).option("ant", {alias:"antonyms", describe: "Antonyms of the given word.", type: "string", demandOption
@@ -17,7 +17,7 @@ const options = yargs
       .help(true)  
       .argv;
 
-cmd.cmdActions(process, yargs);
+cmd.cmdActions(process);
 
 
 

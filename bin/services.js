@@ -13,7 +13,7 @@ class Services{
         
     }
 
-    cmdActions(process, yargs) {
+    cmdActions(process) {
 
         if(process.argv.length == 2) {  
             this.wod = new WordOfTheDay();

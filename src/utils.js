@@ -73,50 +73,47 @@ class DictionaryLogics {
             await this.data.Example.find({
                 word: word
             }).then(word => {
-                ex = word[0].Example;
+                ex = word[0].example;
             });
         }
         return ex;
     }
 
     async getDictionary(word) {
-
+        var w = word;
+        var dict;
         await this.data.Definition.aggregate([{
                 $lookup: {
-                    from: "this.data.Synonyms",
+                    from: "synonyms",
                     as: "syn",
                     pipeline: [
-                        { $match: { word: word } },]
+                        {
+                            $match: 
+                            {
+                                word: w
+                            }
+                        }
+                    ],
                 }
             },
             {
-                $unwind: "$Ant"
-            },
-            {
                 $lookup: {
-                    from: "this.data.Antonyms",
+                    from: "antonyms",
+                    
+                    pipeline: [{$match: {word: w}}],
                     as: "ant",
-                    pipeline: [
-                        { $match: { word: word } },]
-                }
-            },
-            {
-                $unwind: "$Example"
-            },
+            }},
             {
                 $lookup: {
-                    from: "this.data.Example",
+                    from: "examples",
+                    pipeline: [{$match: {word: w}}],
                     as: "ex",
-                    pipeline: [
-                        { $match: { word: word } },]
-                }
-            },
+             } },
         ]).then(
             (result) => {
-                console.log(result);
-                return result;
-            }
-        )
+                dict =  result[0];
+            });
+            return dict;
     }
 
 

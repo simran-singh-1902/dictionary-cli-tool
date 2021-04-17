@@ -10,8 +10,8 @@ class Play {
     async run(){
         var word = await this.retrieve.getWordOfTheDay();
         var dict = await this.retrieve.getDictionary(word);
-        var synORant = this.synonymsORantonyms(dict);
-        this.displayQuestion(dict,dict[0].definition, synORant.selectedSyn, synORant.selectedAnt );
+        var synORant = await this.synonymsORantonyms(dict);
+        this.displayQuestion(dict,dict.definition, synORant.selectedSyn, synORant.selectedAnt );
     }
 
     async synonymsORantonyms(dict){
@@ -27,25 +27,25 @@ class Play {
     }
 
     getSynArray(dict){
-        var synArr = dict[0].syn[0].synonyms;
+        var synArr = dict.syn[0].synonyms;
         synArr = synArr.split(/\s*,\s*/);
         return synArr;
     }
 
     getAntArray(dict){
-        var antArr = dict[0].ant[0].antonyms;
+        var antArr = dict.ant[0].antonyms;
         antArr = antArr.split(/\s*,\s*/);
         return antArr;
     }
 
     displayQuestion(dict, def, syn, ant){
-        if(def){
+        if(def !== undefined){
             console.log(chalk.cyanBright("Definition of word => ",def));
         }
         if(syn !== undefined){
-            console.log(chalk.yellow("Synonym of the word => ", selectedAnt));
+            console.log(chalk.yellow("Synonym of the word => ", syn));
         } else if(ant !== undefined){
-            console.log(chalk.yellow("Antonym of the word => ", selectedAnt));
+            console.log(chalk.yellow("Antonym of the word => ", ant));
         }
         this.askQuestion(dict);
         
@@ -57,8 +57,8 @@ class Play {
                 message: "GUESS THE WORD (Based on information given above, guess the word)"
             }]);
         var reply = response.reply;
-        var synArr = this.synArr(dict);
-        if(reply == dict[0] || synArr.includes(reply)){
+        var synArr = this.getSynArray(dict);
+        if(reply == dict.word || synArr.includes(reply)){
             console.log(chalk.greenBright.bold("Congratulations! You got it right!!!"));
         } else {
             var response = await inquirer.prompt([{
@@ -68,30 +68,33 @@ class Play {
                 choices: [{ name: '1. try again' }, { name: '2. hint' }, { name: '3. quit' }],
               }]);
             var option = response.option;
-            this.seeNewOptions(option, word);      
+            this.seeNewOptions(option, dict);      
         }
     }
 
     async seeNewOptions(option, dict){
         switch(option){
             case '1. try again':
-                this.askQuestion(dict[0]);
+                this.askQuestion(dict);
                 break;
 
             case '2. hint':
                 var nextHint = await this.retrieve.chooseRandom(["synORant","Shuffled"]);
-                
+                console.log(chalk.yellow("Here's another hint for you =>"));
                 if(nextHint == "Shuffled"){
-                    console.log(chalk.yellow("Hint 1 =>",this.shuffleWord(word)));
+                    console.log(chalk.yellow(await this.shuffleWord(dict.word)));
+                    this.askQuestion(dict);
+
                 } else {
-                    var synORant = this.synonymsORantonyms(dict);
-                    this.displayQuestion(dict[0], synORant.selectedSyn, synORant.selectedAnt);
+                    var synORant = await this.synonymsORantonyms(dict);
+
+                    await this.displayQuestion(dict, undefined, synORant.selectedSyn, synORant.selectedAnt);
                 }
-                this.askQuestion(dict);
                 break;
                 
             case '3. quit':
-                console.log(chalk.yellow('Word is ', chalk.green(dict[0].toUpperCase()), '\n'));
+                console.log(chalk.yellow('Word is ', chalk.green(dict.word.toUpperCase()), '\n'));
+                console.log(chalk.green.bold("Thanks for playing!!!"));
                 break;
 
         }
@@ -102,8 +105,9 @@ class Play {
         arr.sort(function() {
             return 0.5 - Math.random();
         });  
-        s = arr.join('');                
-        return s;   
+        var sword = arr.join(''); 
+        if(sword !== s) return sword;
+        else this.shuffleWord(sword);               
     }
 
 }

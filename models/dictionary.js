@@ -28,7 +28,7 @@ class Dictionary {
             word: {type: String, index: true, required: true},
             antonyms: {type: String},
         });
-        var Antonyms = new mongoose.model('Antonyms', synSchema);
+        var Antonyms = new mongoose.model('Antonyms', antSchema);
 
         //4. examples of words
         const exSchema = new mongoose.Schema({
@@ -36,7 +36,6 @@ class Dictionary {
             example: {type: String},
         });
         var Example = new mongoose.model('Example', exSchema);
-        
         return { Definition, Synonyms, Antonyms, Example };
     }
 
