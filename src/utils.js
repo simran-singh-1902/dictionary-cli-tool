@@ -83,37 +83,39 @@ class DictionaryLogics {
         var w = word;
         var dict;
         await this.data.Definition.aggregate([{
+
                 $lookup: {
                     from: "synonyms",
                     as: "syn",
-                    pipeline: [
-                        {
-                            $match: 
-                            {
-                                word: w
-                            }
-                        }
-                    ],
+                    localField: 'word',
+                    foreignField: 'word',
                 }
             },
             {
                 $lookup: {
                     from: "antonyms",
-                    
-                    pipeline: [{$match: {word: w}}],
+                    localField: 'word',
+                    foreignField: 'word',
                     as: "ant",
-            }},
+                }
+            },
             {
                 $lookup: {
                     from: "examples",
-                    pipeline: [{$match: {word: w}}],
+                    localField: 'word',
+                    foreignField: 'word',
                     as: "ex",
-             } },
+                }
+            }, {
+                $match: {
+                    word: w,
+                }
+            },
         ]).then(
             (result) => {
-                dict =  result[0];
+                dict = result;
             });
-            return dict;
+        return dict;
     }
 
 

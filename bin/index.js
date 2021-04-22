@@ -16,21 +16,6 @@ yargs.usage(usage)
 : false })                                                                                              
       .help(true)  
       .argv;
-
 cmd.cmdActions(process);
 
 
-
-
-
-
-// const getDef = (word) => {
-//       Dictionary.Definition.find({word: word }, (err, word) => {
-//           if (err) {
-//               console.log(err);
-//           } else {
-//               console.log(word);
-//           }
-//       });
-//   }
-// getDef("entail");
